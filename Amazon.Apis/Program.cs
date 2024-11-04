@@ -1,5 +1,5 @@
 using Amazon.Apis.Middlewares;
-using Amazon.Infrastructer.Data.Context;
+using Amazon.Infrastructure.Data.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
