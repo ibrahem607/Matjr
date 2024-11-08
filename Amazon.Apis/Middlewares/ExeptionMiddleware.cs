@@ -1,4 +1,5 @@
-﻿using Amazon.Apis.Errors;
+﻿
+using Amazon.Core.Errors;
 using System.Net;
 using System.Text.Json;
 
@@ -35,9 +36,8 @@ namespace Amazon.Apis.Middlewares
                 httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 httpContext.Response.ContentType = "application/json";
 
-                var response = _env.IsDevelopment() ? new ApiExeptionResponse((int)HttpStatusCode.InternalServerError,
-                ex.Message, ex.StackTrace.ToString())
-                    : new ApiExeptionResponse((int)HttpStatusCode.InternalServerError);
+                var response = _env.IsDevelopment() ? new ApiExeptionResponse((int)HttpStatusCode.InternalServerError, ex.Message) // message passed here
+            : new ApiExeptionResponse((int)HttpStatusCode.InternalServerError, "An unexpected error occurred");
 
                 var json = JsonSerializer.Serialize(response);
 

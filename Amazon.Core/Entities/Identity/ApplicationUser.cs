@@ -9,7 +9,8 @@ namespace Amazon.Core.Entities.Identity
 {
     public class ApplicationUser : IdentityUser
     {
-        public string DisplayName { get; set; }
-        public Adress Adress { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public virtual Adress Adress { get; set; }
     }
 }

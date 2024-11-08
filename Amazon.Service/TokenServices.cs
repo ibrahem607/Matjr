@@ -16,42 +16,40 @@ namespace Amazon.Service
     public class TokenServices : ITokenService
     {
         private readonly IConfiguration _configuration;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TokenServices(IConfiguration configuration)
+        public TokenServices(IConfiguration configuration, UserManager<ApplicationUser> userManager)
         {
             _configuration = configuration;
+            _userManager = userManager;
         }
-        public async Task<string> CreateTokenAsync(ApplicationUser user, UserManager<ApplicationUser> userManager)
-        {
 
-            //1. Header
-            //2. Payload
-            //2.1 Private Claims (ده user الخاصه بال )
-            var AuthClaims = new List<Claim>()
+        public async Task<string> CreateTokenAsync(ApplicationUser user)
+        {
+            var claims = new[]
             {
-                new Claim(ClaimTypes.GivenName , user.DisplayName),
-                new Claim(ClaimTypes.Email,user.Email),
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.FirstName)
             };
 
-            var UserRoles = await userManager.GetRolesAsync(user);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Issuer"],
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds
+            );
 
-            foreach (var Role in UserRoles)
-            {
-                AuthClaims.Add(new Claim(ClaimTypes.Role, Role));
-            }
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
 
-            //3. Signature 
-            //3.1 Key
-            var AuthKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
-
-            var Token = new JwtSecurityToken(
-               issuer: _configuration["JWT:ValidIssuer"],
-               audience: _configuration["JWT:ValidAudience"],
-               expires: DateTime.Now.AddDays(double.Parse(_configuration["JWT:DurationInDays"])),
-               claims: AuthClaims,
-               signingCredentials: new SigningCredentials(AuthKey, SecurityAlgorithms.HmacSha256Signature)
-               );
-            return new JwtSecurityTokenHandler().WriteToken(Token);
+        public async Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
+        {
+            var result = await _userManager.CheckPasswordAsync(user, password);
+            return result;
         }
     }
 }

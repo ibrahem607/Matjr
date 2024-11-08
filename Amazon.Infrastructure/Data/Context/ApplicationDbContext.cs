@@ -35,7 +35,7 @@ namespace Amazon.Infrastructure.Data.Context
                 var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
                 // Specify the provider and connection string here
-                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=amazon;Trusted_Connection=True;MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-C90KJR9\\SQLEXPRESS;Database=amazon;Trusted_Connection=True;MultipleActiveResultSets=True");
 
                 return new ApplicationDbContext(optionsBuilder.Options);
             }

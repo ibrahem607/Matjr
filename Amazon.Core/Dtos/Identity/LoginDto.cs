@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Amazon.Apis.Dtos.Identity
+namespace Amazon.Core.Dtos.Identity
 {
     public class LoginDto
     {

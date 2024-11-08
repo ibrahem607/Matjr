@@ -10,6 +10,7 @@ namespace Amazon.Core.Contract.Services
 {
     public interface ITokenService
     {
-        Task<string> CreateTokenAsync(ApplicationUser user, UserManager<ApplicationUser> userManager);
+        Task<string> CreateTokenAsync(ApplicationUser user);
+        Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
     }
 }

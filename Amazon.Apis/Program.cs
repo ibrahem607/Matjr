@@ -5,6 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+using Amazon.Core.Contract.Services;
+using Amazon.Core.Interfaces;
+using Amazon.Infrastructure.Repositories;
+using Amazon.Service.AuthService;
+using Amazon.Service;
+using Amazon.Core.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
+
 namespace Amazon.Apis
 {
     public class Program
@@ -23,6 +31,14 @@ namespace Amazon.Apis
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+          .AddEntityFrameworkStores<ApplicationDbContext>()
+          .AddDefaultTokenProviders();
+            builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+            // Register Unit of Work and other services
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<ITokenService, TokenServices>();
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
