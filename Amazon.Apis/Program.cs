@@ -60,11 +60,10 @@ namespace Amazon.Apis
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
+           
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+            
             app.UseMiddleware<ExeptionMiddleware>();
             app.UseHttpsRedirection();
 
