@@ -39,6 +39,20 @@ namespace Amazon.Apis
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenServices>();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins", policy =>
+                {
+                    policy.AllowAnyOrigin()  
+                          .AllowAnyHeader()  
+                          .AllowAnyMethod(); 
+                });
+            });
+
+
+
+
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -67,7 +81,7 @@ namespace Amazon.Apis
             }
             app.UseMiddleware<ExeptionMiddleware>();
             app.UseHttpsRedirection();
-
+            app.UseCors("AllowAllOrigins");
             app.UseAuthorization();
 
 
