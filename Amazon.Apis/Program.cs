@@ -42,7 +42,7 @@ namespace Amazon.Apis
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAllOrigins", policy =>
+                options.AddPolicy("AllowAll", policy =>
                 {
                     policy.AllowAnyOrigin()  
                           .AllowAnyHeader()  
@@ -80,7 +80,7 @@ namespace Amazon.Apis
             
             app.UseMiddleware<ExeptionMiddleware>();
             app.UseHttpsRedirection();
-            app.UseCors("AllowAllOrigins");
+            app.UseCors("AllowAll");
             app.UseAuthorization();
 
 

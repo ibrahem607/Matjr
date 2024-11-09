@@ -22,29 +22,23 @@ namespace Amazon.Infrastructure.Data.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
             builder.ApplyConfiguration(new ProductConfiguration());
             builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new BrandConfiguration());
             builder.ApplyConfiguration(new CartConfiguration());
             builder.ApplyConfiguration(new CartItemConfiguration());
+            builder.ApplyConfiguration(new OrderConfiguration());
+            builder.ApplyConfiguration(new OrderItemConfiguration());
         }
-        public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
-        {
-            public ApplicationDbContext CreateDbContext(string[] args)
-            {
-                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-
-                // Specify the provider and connection string here
-                optionsBuilder.UseSqlServer("Server=db9899.public.databaseasp.net; Database=db9899; User Id=db9899; Password=n+8RG7i%-B3s; Encrypt=False; MultipleActiveResultSets=True;");
-
-                return new ApplicationDbContext(optionsBuilder.Options);
-            }
-        }
+        
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
     }
 
 }

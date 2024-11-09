@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+Amazon.Apis/appsettings.json
+Amazon.Infrastructure/Data/Context/ApplicationDbContextFactory.cs
