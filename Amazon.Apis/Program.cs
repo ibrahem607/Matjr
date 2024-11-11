@@ -4,14 +4,16 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
+using Amazon.Service.Implementations;
 using Amazon.Core.Contract.Services;
 using Amazon.Core.Interfaces;
 using Amazon.Infrastructure.Repositories;
+using Amazon.Infrastructure.Repositories;  
 using Amazon.Service.AuthService;
 using Amazon.Service;
 using Amazon.Core.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
+using Amazon.Service.Interfaces;
 
 namespace Amazon.Apis
 {
@@ -34,6 +36,7 @@ namespace Amazon.Apis
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
           .AddEntityFrameworkStores<ApplicationDbContext>()
           .AddDefaultTokenProviders();
+       
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
             // Register Unit of Work and other services
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
